@@ -1,0 +1,38 @@
+<script src="/socket.io/socket.io.js"></script>
+
+
+<!-- <h1>hello to sweet world 😍😍</h1> -->
+
+<div id="messages-container"></div>
+<form id="message-form">
+    <input type="text" name="message" id="message-input" placeholder="Type your message"> 
+    <button type="submit">send</button> 
+</form>
+
+
+
+    <script>
+        const socket= window.io()
+    
+        // socket.emit("message", {message: "hello"})
+    
+        // socket.on("test", data=>{
+        //     console.log(data);
+        // })
+
+        const msgForm= document.querySelector("#message-form");
+        const msgInput= document.querySelector("#message-input");
+        const msgsContainer= document.querySelector("#messages-container") 
+
+        msgForm.onsubmit =e => {
+            e.preventDefault();
+            const msg=msgInput.value;
+
+            socket.emit("send-message", {msg})
+            msgInput.value= ""
+        }
+        socket.on("send-message", ({msg})=>{
+            msgsContainer.innerHTML += `<p>${msg}</p>`
+
+        })
+    </script>
